@@ -1,0 +1,8 @@
+# binaries
+bin/
+
+# wallet seed phrase
+config/
+
+# cache of uploaded assets on arweave
+.cache/
