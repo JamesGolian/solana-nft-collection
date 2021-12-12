@@ -26,6 +26,14 @@ break-line:
 wa-install: ## Install web app dependencies.
 	cd $(WEB_APP) && npx browserslist@latest --update-db && yarn install
 
+.PHONY: wa-env
+wa-env: ## Show the environment variables.
+	@echo "REACT_APP_CANDY_MACHINE_CONFIG: ${REACT_APP_CANDY_MACHINE_CONFIG}"
+	@echo "REACT_APP_CANDY_MACHINE_ID: ${REACT_APP_CANDY_MACHINE_ID}"
+	@echo "REACT_APP_TREASURY_ADDRESS: ${REACT_APP_TREASURY_ADDRESS}"
+	@echo "REACT_APP_SOLANA_NETWORK: ${REACT_APP_SOLANA_NETWORK}"
+	@echo "REACT_APP_SOLANA_RPC_HOST: ${REACT_APP_SOLANA_RPC_HOST}"
+
 .PHONY: wa-test
 wa-test: ## Test the web app.
 	cd $(WEB_APP) && yarn test
@@ -35,7 +43,7 @@ wa-build: ## Build the web app for production.
 	cd $(WEB_APP) && yarn build
 
 .PHONY: wa-start
-wa-start: ## Start the web app on http://localhost:3000/.
+wa-start: wa-env ## Start the web app on http://localhost:3000/.
 	cd $(WEB_APP) && yarn start
 
 
