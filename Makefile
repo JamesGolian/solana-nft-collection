@@ -35,11 +35,11 @@ wa-env: ## Show the environment variables.
 	@echo "REACT_APP_SOLANA_RPC_HOST: ${REACT_APP_SOLANA_RPC_HOST}"
 
 .PHONY: wa-test
-wa-test: ## Test the web app.
+wa-test: wa-env ## Test the web app.
 	cd $(WEB_APP) && yarn test
 
 .PHONY: wa-build
-wa-build: ## Build the web app for production.
+wa-build: wa-env ## Build the web app for production.
 	cd $(WEB_APP) && yarn build
 
 .PHONY: wa-start
