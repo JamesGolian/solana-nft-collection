@@ -252,6 +252,8 @@ const CandyMachine = ({ walletAddress }) => {
 
     useEffect(() => {
         getCandyMachineState();
+        
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getProvider = () => {
@@ -321,10 +323,11 @@ const CandyMachine = ({ walletAddress }) => {
                 <p>{`Items Minted: ${machineStats.itemsRedeemed} / ${machineStats.itemsAvailable}`}</p>
 
                 {isMinting && <p>MINTING...</p>}
-                {machineStats.itemsRemaining > 0 && (
+                {machineStats.itemsRemaining === 0 ? (
+                    <p className="sub-text">Sold Out 🙊</p>
+                ) : (
                     <button className="cta-button mint-button" onClick={mintToken} disabled={isMinting}>Mint NFT</button>
                 )}
-                {machineStats.itemsRemaining === 0 && <p>SOLD OUT!</p>}
 
                 {isLoadingMints && <p>LOADING MINTS...</p>}
                 {mints.length > 0 && renderMintedItems()}
