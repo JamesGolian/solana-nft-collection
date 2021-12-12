@@ -7,9 +7,7 @@ import { candyMachineProgram, TOKEN_METADATA_PROGRAM_ID, SPL_ASSOCIATED_TOKEN_AC
 import CountdownTimer from '../countdown-timer';
 import './candyMachine.css';
 
-const {
-    metadata: { Metadata, MetadataProgram },
-} = programs;
+const { metadata: { Metadata, MetadataProgram } } = programs;
 const config = new web3.PublicKey(process.env.REACT_APP_CANDY_MACHINE_CONFIG);
 const { SystemProgram } = web3;
 const opts = { preflightCommitment: 'processed' };
@@ -25,12 +23,8 @@ const CandyMachine = ({ walletAddress }) => {
     const [isMinting, setIsMinting] = useState(false);
     const [isLoadingMints, setIsLoadingMints] = useState(false);
 
-    // Actions
     const fetchHashTable = async (hash, metadataEnabled) => {
-        const connection = new web3.Connection(
-            process.env.REACT_APP_SOLANA_RPC_HOST
-        );
-
+        const connection = new web3.Connection(process.env.REACT_APP_SOLANA_RPC_HOST);
         const metadataAccounts = await MetadataProgram.getProgramAccounts(
             connection,
             {
@@ -59,7 +53,6 @@ const CandyMachine = ({ walletAddress }) => {
         );
 
         const mintHashes = [];
-
         for (let index = 0; index < metadataAccounts.length; index++) {
             const account = metadataAccounts[index];
             const accountInfo = await connection.getParsedAccountInfo(account.pubkey);
@@ -67,7 +60,6 @@ const CandyMachine = ({ walletAddress }) => {
             if (metadataEnabled) mintHashes.push(metadata.data);
             else mintHashes.push(metadata.data.mint);
         }
-
         return mintHashes;
     };
 
@@ -101,7 +93,11 @@ const CandyMachine = ({ walletAddress }) => {
     const getTokenWallet = async (wallet, mint) => {
         return (
             await web3.PublicKey.findProgramAddress(
-                [wallet.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), mint.toBuffer()],
+                [
+                    wallet.toBuffer(),
+                    TOKEN_PROGRAM_ID.toBuffer(),
+                    mint.toBuffer()
+                ],
                 SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID
             )
         )[0];
@@ -111,7 +107,8 @@ const CandyMachine = ({ walletAddress }) => {
         try {
             setIsMinting(true);
             const mint = web3.Keypair.generate();
-            const token = await getTokenWallet(walletAddress.publicKey, mint.publicKey);
+            const address = walletAddress.publicKey.toString();
+            const token = await getTokenWallet(address, mint.publicKey);
             const metadata = await getMetadata(mint.publicKey);
             const masterEdition = await getMasterEdition(mint.publicKey);
             const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
@@ -121,13 +118,13 @@ const CandyMachine = ({ walletAddress }) => {
             const accounts = {
                 config,
                 candyMachine: process.env.REACT_APP_CANDY_MACHINE_ID,
-                payer: walletAddress.publicKey.toString(),
+                payer: address,
                 wallet: process.env.REACT_APP_TREASURY_ADDRESS,
                 mint: mint.publicKey,
                 metadata,
                 masterEdition,
-                mintAuthority: walletAddress.publicKey.toString(),
-                updateAuthority: walletAddress.publicKey.toString(),
+                mintAuthority: address,
+                updateAuthority: address,
                 tokenMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
                 tokenProgram: TOKEN_PROGRAM_ID,
                 systemProgram: SystemProgram.programId,
@@ -138,7 +135,7 @@ const CandyMachine = ({ walletAddress }) => {
             const signers = [mint];
             const instructions = [
                 web3.SystemProgram.createAccount({
-                    fromPubkey: walletAddress.publicKey,
+                    fromPubkey: address,
                     newAccountPubkey: mint.publicKey,
                     space: MintLayout.span,
                     lamports: rent,
@@ -170,13 +167,7 @@ const CandyMachine = ({ walletAddress }) => {
             const provider = getProvider();
             const idl = await Program.fetchIdl(candyMachineProgram, provider);
             const program = new Program(idl, candyMachineProgram, provider);
-
-            const txn = await program.rpc.mintNft({
-                accounts,
-                signers,
-                instructions,
-            });
-
+            const txn = await program.rpc.mintNft({ accounts, signers, instructions });
             console.log('txn:', txn);
 
             // Setup listener
@@ -198,8 +189,8 @@ const CandyMachine = ({ walletAddress }) => {
             );
         } catch (error) {
             setIsMinting(false);
-            let message = error.msg || 'Minting failed! Please try again!';
 
+            let message = error.msg || 'Minting failed! Please try again!';
             if (!error.msg) {
                 if (error.message.indexOf('0x138')) {
                 } else if (error.message.indexOf('0x137')) {
@@ -214,9 +205,7 @@ const CandyMachine = ({ walletAddress }) => {
                     message = `Minting period hasn't started yet.`;
                 }
             }
-
             console.warn(message);
-            console.log(error);
         }
     };
 
@@ -231,17 +220,9 @@ const CandyMachine = ({ walletAddress }) => {
             { pubkey: associatedTokenAddress, isSigner: false, isWritable: true },
             { pubkey: walletAddress, isSigner: false, isWritable: false },
             { pubkey: splTokenMintAddress, isSigner: false, isWritable: false },
-            {
-                pubkey: web3.SystemProgram.programId,
-                isSigner: false,
-                isWritable: false,
-            },
+            { pubkey: web3.SystemProgram.programId, isSigner: false, isWritable: false },
             { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
-            {
-                pubkey: web3.SYSVAR_RENT_PUBKEY,
-                isSigner: false,
-                isWritable: false,
-            },
+            { pubkey: web3.SYSVAR_RENT_PUBKEY, isSigner: false, isWritable: false },
         ];
         return new web3.TransactionInstruction({
             keys,
@@ -272,7 +253,8 @@ const CandyMachine = ({ walletAddress }) => {
         const itemsRedeemed = candyMachine.itemsRedeemed.toNumber();
         const itemsRemaining = itemsAvailable - itemsRedeemed;
         const goLiveDate = candyMachine.data.goLiveDate.toNumber();
-        const goLiveDateTimeString = `${new Date(goLiveDate * 1000).toLocaleDateString()} @ ${new Date(goLiveDate * 1000).toLocaleTimeString()}`;
+        const goLiveDateTimeString = `${new Date(goLiveDate * 1000).toLocaleDateString()} @
+            ${new Date(goLiveDate * 1000).toLocaleTimeString()}`;
         setMachineStats({ itemsAvailable, itemsRedeemed, itemsRemaining, goLiveDate, goLiveDateTimeString });
 
         setIsLoadingMints(true);

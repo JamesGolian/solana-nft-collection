@@ -24,7 +24,7 @@ break-line:
 ##@ Web Application
 .PHONY: wa-install
 wa-install: ## Install web app dependencies.
-	cd $(WEB_APP) && npx browserslist@latest --update-db && yarn install
+	cd $(WEB_APP) && npm install && npx browserslist@latest --update-db
 
 .PHONY: wa-env
 wa-env: ## Show the environment variables.
@@ -36,15 +36,15 @@ wa-env: ## Show the environment variables.
 
 .PHONY: wa-test
 wa-test: wa-env ## Test the web app.
-	cd $(WEB_APP) && yarn test
+	cd $(WEB_APP) && npm run test
 
 .PHONY: wa-build
 wa-build: wa-env ## Build the web app for production.
-	cd $(WEB_APP) && yarn build
+	cd $(WEB_APP) && npm run build
 
 .PHONY: wa-start
 wa-start: wa-env ## Start the web app on http://localhost:3000/.
-	cd $(WEB_APP) && yarn start
+	cd $(WEB_APP) && npm run start
 
 
 ##@ Assets Generation

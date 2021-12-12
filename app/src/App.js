@@ -19,11 +19,9 @@ const App = () => {
           console.log('Phantom wallet found!');
 
           const response = await solana.connect({ onlyIfTrusted: true });
-          console.log(
-            'Connected with Public Key:',
-            response.publicKey.toString()
-          );
-          setWalletAddress(response.publicKey.toString());
+          const address = response.publicKey.toString();
+          console.log('Connected with public key:', address);
+          setWalletAddress(address);
         }
       } else {
         alert('👻 Please, install the Phantom extension to access this website!');
@@ -39,11 +37,9 @@ const App = () => {
 
       if (solana) {
         const response = await solana.connect();
-        console.log(
-          'Connected with Public Key:',
-          response.publicKey.toString()
-        );
-        setWalletAddress(response.publicKey.toString());
+        const address = response.publicKey.toString();
+        console.log('Connected with Public Key:', address);
+        setWalletAddress(address);
       }
     } catch (error) {
       console.log(error);
@@ -51,10 +47,7 @@ const App = () => {
   }
 
   const renderNotConnectedContainer = () => (
-    <button
-      className="cta-button connect-wallet-button"
-      onClick={connectWallet}
-    >
+    <button className="cta-button connect-wallet-button" onClick={connectWallet}>
       Connect to Wallet
     </button>
   );
@@ -76,15 +69,13 @@ const App = () => {
           <p className="sub-text">NFT drop machine with fair mint</p>
           {!walletAddress && renderNotConnectedContainer()}
         </div>
+        
         {walletAddress && <CandyMachine walletAddress={window.solana} />}
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
-          <a
-            className="footer-text"
-            href={TWITTER_LINK}
-            target="_blank"
-            rel="noreferrer"
-          >{`built on @${TWITTER_HANDLE}`}</a>
+          <a className="footer-text" href={TWITTER_LINK} target="_blank" rel="noreferrer">
+            {`built on @${TWITTER_HANDLE}`}
+          </a>
         </div>
       </div>
     </div>
