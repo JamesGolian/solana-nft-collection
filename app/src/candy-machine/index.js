@@ -308,8 +308,13 @@ const CandyMachine = ({ walletAddress }) => {
             <div className="machine-container">
                 <p>{`Drop Date: ${machineStats.goLiveDateTimeString}`}</p>
                 <p>{`Items Minted: ${machineStats.itemsRedeemed} / ${machineStats.itemsAvailable}`}</p>
+
                 {isMinting && <p>MINTING...</p>}
-                <button className="cta-button mint-button" onClick={mintToken} disabled={isMinting}>Mint NFT</button>
+                {machineStats.itemsRemaining > 0 && (
+                    <button className="cta-button mint-button" onClick={mintToken} disabled={isMinting}>Mint NFT</button>
+                )}
+                {machineStats.itemsRemaining === 0 && <p>SOLD OUT!</p>}
+
                 {isLoadingMints && <p>LOADING MINTS...</p>}
                 {mints.length > 0 && renderMintedItems()}
             </div>
