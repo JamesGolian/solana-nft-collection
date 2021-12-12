@@ -4,6 +4,7 @@ import { Program, Provider, web3 } from '@project-serum/anchor';
 import { MintLayout, TOKEN_PROGRAM_ID, Token } from '@solana/spl-token';
 import { programs } from '@metaplex/js';
 import { candyMachineProgram, TOKEN_METADATA_PROGRAM_ID, SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID } from './helpers';
+import CountdownTimer from '../countdown-timer';
 import './candyMachine.css';
 
 const {
@@ -292,21 +293,31 @@ const CandyMachine = ({ walletAddress }) => {
 
     const renderMintedItems = () => (
         <div className="gif-container">
-          <p className="sub-text">Minted Items ✨</p>
-          <div className="gif-grid">
-            {mints.map((mint) => (
-              <div className="gif-item" key={mint}>
-                <img src={mint} alt={`Minted NFT ${mint}`} />
-              </div>
-            ))}
-          </div>
+            <p className="sub-text">Minted Items ✨</p>
+            <div className="gif-grid">
+                {mints.map((mint) => (
+                    <div className="gif-item" key={mint}>
+                        <img src={mint} alt={`Minted NFT ${mint}`} />
+                    </div>
+                ))}
+            </div>
         </div>
-      );
+    );
+
+    const renderDropTimer = () => {
+        const currentDate = new Date();
+        const dropDate = new Date(machineStats.goLiveDate * 1000);
+
+        if (currentDate < dropDate) {
+            return <CountdownTimer dropDate={dropDate} />;
+        }
+        return <p>{`Drop Date: ${machineStats.goLiveDateTimeString}`}</p>;
+    };
 
     return (
         machineStats && (
             <div className="machine-container">
-                <p>{`Drop Date: ${machineStats.goLiveDateTimeString}`}</p>
+                {renderDropTimer()}
                 <p>{`Items Minted: ${machineStats.itemsRedeemed} / ${machineStats.itemsAvailable}`}</p>
 
                 {isMinting && <p>MINTING...</p>}

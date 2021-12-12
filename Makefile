@@ -133,7 +133,7 @@ mp-candy-machine: ## Create and deploy the candy machine to the devnet
 
 .PHONY: mp-update-date
 mp-update-date: ## Update the date of the candy machine (date is hardcoded!!).
-	ts-node $(METAPLEX)/js/packages/cli/src/candy-machine-cli.ts update_candy_machine --date "12 Dec 2021 00:00:00 GMT" --env devnet --keypair $(SOL_DEVNET)
+	ts-node $(METAPLEX)/js/packages/cli/src/candy-machine-cli.ts update_candy_machine --date "13 Dec 2021 00:00:00 GMT" --env devnet --keypair $(SOL_DEVNET)
 	@echo "${GREEN}Check the transaction on https://explorer.solana.com/?cluster=devnet${RESET}"
 
 .PHONY: mp-clear-cache
