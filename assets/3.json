@@ -1,24 +1,23 @@
 {
-    "name": "SOLPOKEMONS #3",
-    "symbol": "SPM",
-    "image": "3.png",
-    "properties": {
-      "files": [
-        {
-          "uri": "3.png",
-          "type": "image/png"
-        }
-      ],
-      "creators": [
-        {
-          "address": "HSE7Y7y7hW1CDGTMyiR5A5bWmYmw5QVxdnxYKUkdxwwW",
-          "share": 80
-        },
-        {
-            "address": "AUBDHx79cA6n6obE4ksp26VrhZ4EVyqhdSPm4HpHiAif",
-            "share": 20
-        }
-      ]
-    }
+  "name": "SOLPOKEMONS #3",
+  "symbol": "SPM",
+  "image": "3.png",
+  "properties": {
+    "files": [
+      {
+        "uri": "3.png",
+        "type": "image/png"
+      }
+    ],
+    "creators": [
+      {
+        "address": "HSE7Y7y7hW1CDGTMyiR5A5bWmYmw5QVxdnxYKUkdxwwW",
+        "share": 80
+      },
+      {
+        "address": "AUBDHx79cA6n6obE4ksp26VrhZ4EVyqhdSPm4HpHiAif",
+        "share": 20
+      }
+    ]
   }
-  
+}
