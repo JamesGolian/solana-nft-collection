@@ -24,7 +24,7 @@ break-line:
 ##@ Web Application
 .PHONY: wa-install
 wa-install: ## Install web app dependencies.
-	cd $(WEB_APP) && yarn install
+	cd $(WEB_APP) && npx browserslist@latest --update-db && yarn install
 
 .PHONY: wa-test
 wa-test: ## Test the web app.
